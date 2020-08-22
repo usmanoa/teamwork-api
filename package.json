@@ -1,0 +1,29 @@
+{
+  "name": "teamwork-api",
+  "version": "1.0.0",
+  "description": "Teamwork is an ​internal social network for employees of an organization. The goal of this application is to facilitate more interaction between colleagues and promote team bonding",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/usmanoa/teamwork-api.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/usmanoa/teamwork-api/issues"
+  },
+  "homepage": "https://github.com/usmanoa/teamwork-api#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "eslint": "^7.7.0",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-import": "^2.22.0",
+    "nodemon": "^2.0.4"
+  }
+}
