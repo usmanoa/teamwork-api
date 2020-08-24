@@ -1,4 +1,3 @@
-/* eslint-disable linebreak-style */
 const { Pool } = require('pg');
 require('dotenv').config();
 

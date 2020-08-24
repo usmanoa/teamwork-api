@@ -1,21 +1,30 @@
-/* eslint-disable linebreak-style */
 const express = require('express');
 const { pool } = require('./config/postgres');
 
 const app = express();
 
-app.set('port', 4000);
-
-app.get('/', (req, res) => {
+app.get('/', (req, res, next) => {
   pool
     .query('SELECT * FROM users')
     .then((data) => {
-      console.log('user:', data.rows);
       res.send(data.rows);
     })
-    .catch((err) => console.log(err));
+    .catch((err) => next(err));
 });
 
-app.listen(app.get('port'), () => {
-  console.log('Server running on port: 4000');
+app.use((req, res, next) => {
+  const err = new Error('Not Found');
+  err.statusCode = 404;
+  err.error = 'Not Found';
+  next(err);
 });
+
+app.use((err, req, res, next) => {
+  res.status(err.statusCode || 500);
+  res.json({
+    status: 'error',
+    error: err.error,
+  });
+});
+
+module.exports = app;
