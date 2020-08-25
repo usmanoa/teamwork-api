@@ -1,9 +1,9 @@
 const { Router } = require('express');
+const { authController } = require('../../contollers');
+const { verifyUser, verifyAdmin } = require('../../middlewares');
 
 const router = Router();
 
-router.get('/create-user', (req, res) => {
-  res.send('Create User');
-});
+router.post('/create-user', verifyUser, verifyAdmin, authController.createUserAccount);
 
 module.exports = router;

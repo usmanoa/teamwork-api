@@ -24,3 +24,8 @@ function comparePassword(password, hash) {
     .then((match) => match)
     .catch((err) => err);
 }
+
+module.exports = {
+  generateHashedPassword,
+  comparePassword,
+};

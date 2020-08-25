@@ -1,6 +1,19 @@
 const { pool } = require('../db');
 
 /**
+ * Retrieves a user from the database using an email
+ * @param {string} email - User's email
+ * @return {Promise} Resolves to a user with the provided email
+ */
+function findUserByEmail(email) {
+  const queryString = 'SELECT * FROM users WHERE email = $1';
+  return pool
+    .query(queryString, [email])
+    .then((result) => result.rows[0])
+    .catch((err) => err);
+}
+
+/**
  * Adds a new user to the database
  * @param {object} userDetails - Details of a new user
  */
@@ -18,21 +31,8 @@ function addUser(userDetails) {
       firstname, lastname, email, password,
       gender, jobRole, department, address,
     ])
+    .then(() => findUserByEmail(email))
     .then((result) => result)
-    .then((result) => result)
-    .catch((err) => err);
-}
-
-/**
- * Retrieves a user from the database using an email
- * @param {string} email - User's email
- * @return {Promise} Resolves to a user with the provided email
- */
-function findUserByEmail(email) {
-  const queryString = 'SELECT * FROM users WHERE email = $1';
-  return pool
-    .query(queryString, [email])
-    .then((result) => result.rows[0])
     .catch((err) => err);
 }
 
