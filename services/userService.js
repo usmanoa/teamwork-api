@@ -4,7 +4,7 @@ const { pool } = require('../db');
  * Adds a new user to the database
  * @param {object} userDetails - Details of a new user
  */
-function createUser(userDetails) {
+function addUser(userDetails) {
   const {
     firstname, lastname, email, password,
     gender, jobRole, department, address,
@@ -36,7 +36,21 @@ function findUserByEmail(email) {
     .catch((err) => err);
 }
 
+/**
+ * Retrieves a user from the database using id
+ * @param {string} id - User's email
+ * @return {Promise} Resolves to a user with the provided id
+ */
+function findUserById(id) {
+  const queryString = 'SELECT * from users where user_id = $1';
+  return pool
+    .query(queryString, [id])
+    .then((result) => result.rows[0])
+    .catch((err) => err);
+}
+
 module.exports = {
-  createUser,
+  addUser,
   findUserByEmail,
+  findUserById,
 };

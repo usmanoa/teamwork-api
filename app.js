@@ -1,10 +1,9 @@
 const express = require('express');
+const route = require('./routes');
 
 const app = express();
 
-app.get('/', (req, res) => {
-  res.send('Home');
-});
+app.use('/api', route);
 
 app.use((req, res, next) => {
   const err = new Error('Not Found');
