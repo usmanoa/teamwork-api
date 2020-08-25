@@ -9,4 +9,6 @@ const pool = new Pool({
   port: process.env.PG_PORT,
 });
 
-exports.pool = pool;
+module.exports = {
+  pool,
+};
