@@ -1,8 +1,43 @@
 const { check, validationResult } = require('express-validator');
 
-function validateData(method) {
+/**
+ *  Checks the request body for required fields
+ * @param {string[]} fields - Array of field to check
+ */
+function isFieldMissing(fields) {
+  return (req, res, next) => {
+    if (!Array.isArray(fields)) {
+      return next();
+    }
+    const errors = [];
+    fields.forEach((data) => {
+      if (!req.body[data]) {
+        errors.push({
+          nessage: `${data} is mising. ${data} is required`,
+          param: data,
+          location: 'body',
+        });
+      }
+    });
+
+    if (errors.length === 0) {
+      next();
+    } else {
+      res.status(422).json({
+        status: 'error',
+        error: errors,
+      });
+    }
+  };
+}
+
+/**
+ * Validates  data in the request body
+ * @param {string} params - Fields to validate
+ */
+function validateData(params) {
   let validations = [];
-  switch (method) {
+  switch (params) {
     case 'createUser':
       validations = [
         check('firstName').trim().isLength({ min: 2 }),
@@ -21,6 +56,12 @@ function validateData(method) {
   return validations;
 }
 
+/**
+ * Handles validation errors in request body
+ * @param {object} req - The request object
+ * @param {object} res - The response object
+ * @param {object} next - The next object
+ */
 function handleValidationErrors(req, res, next) {
   const errors = validationResult(req);
   if (errors.isEmpty()) {
@@ -33,10 +74,17 @@ function handleValidationErrors(req, res, next) {
   }
 }
 
-function validate(method = '') {
-  return [...validateData(method), handleValidationErrors];
+const fieldsToCheck = {
+  createUser: ['firstName', 'lastName', 'email', 'gender',
+    'password', 'jobRole', 'department', 'address'],
+};
+
+function validate(params = '') {
+  return ([
+    isFieldMissing(fieldsToCheck[params]),
+    ...validateData(params),
+    handleValidationErrors,
+  ]);
 }
 
 module.exports = validate;
-
-// validate()()
