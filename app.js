@@ -1,21 +1,19 @@
 const express = require('express');
-const { pool } = require('./config/postgres');
+const logger = require('morgan');
+const bodyParser = require('body-parser');
+const route = require('./routes');
 
 const app = express();
+app.use(logger('dev'));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
-app.get('/', (req, res, next) => {
-  pool
-    .query('SELECT * FROM users')
-    .then((data) => {
-      res.send(data.rows);
-    })
-    .catch((err) => next(err));
-});
+app.use('/api', route);
 
 app.use((req, res, next) => {
   const err = new Error('Not Found');
   err.statusCode = 404;
-  err.error = 'Not Found';
+  err.error = 'Resource not found';
   next(err);
 });
 
