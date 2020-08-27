@@ -1,9 +1,11 @@
 const { Router } = require('express');
 const { authController } = require('../../contollers');
-const { verifyUser, verifyAdmin } = require('../../middlewares');
+const { validate, verifyUser, verifyAdmin } = require('../../middlewares');
 
 const router = Router();
 
-router.post('/create-user', verifyUser, verifyAdmin, authController.createUserAccount);
+router
+  .post('/create-user', verifyUser, verifyAdmin,
+    validate('createUser'), authController.createUserAccount);
 
 module.exports = router;

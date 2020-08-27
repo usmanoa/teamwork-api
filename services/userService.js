@@ -19,7 +19,7 @@ function findUserByEmail(email) {
  */
 function addUser(userDetails) {
   const {
-    firstname, lastname, email, password,
+    firstName, lastName, email, password,
     gender, jobRole, department, address,
   } = userDetails;
   const queryString = 'INSERT INTO users '
@@ -28,7 +28,7 @@ function addUser(userDetails) {
     + '($1, $2, $3, $4, $5, $6, $7, $8)';
   return pool
     .query(queryString, [
-      firstname, lastname, email, password,
+      firstName, lastName, email, password,
       gender, jobRole, department, address,
     ])
     .then(() => findUserByEmail(email))
